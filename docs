@@ -242,3 +242,55 @@
   242  podman rm -a
   243  history
   244  history > docs.txt
+
+
+
+lab image-operations start
+  255  podman login -u='1979710|---test' -p=eyJhbGciOiJSUzUxMiJ9.eyJzdWIiOiI3MWY5NDViZWMwMmI0MjkyOWVlZGM4Yjc4ZDNjZTMxNSJ9.mi-ryvI1Q9Wxe94gD43ojv9-ku1pezuULOe9nNCl-MCjHmCRnkGVqlHnegrz-csTU707KycV1uTP5ZDoO98bTmsZZ5BJj8O3aODw6wM7Zmp8lsGLhyAz3ntW8qxMaPO7e-F20OsTB3pxBIuUDammrtclCl0biooItMd8FFtoYHSnTEXiY7YFnSEglW8VIht9opvVcdJ6DSyGbcHS1DNbZ-fIQtkXXTSyOmWufsDAqbWEAtI5h8FjdZbSMQfZ303bhTQUN0fvt_tlVGowW1VNeAc5Msam7kOwC_iWzEU0_HF5Opmce4SglKKXQwxxwsWJ3JjV9jdt5KLANOB6h_lggIv5TFJrBXgQaZpGJEFcbuVawUXBmvgMgFtRtA5B-7_NljAJvVCGPOVGW7qNl6UYft3Oeqo_CMDrJyFXFxuMOtL3VXRnxvoE9libwxa02HMBFVMv-BqwpxyUnd24SHpn9CFAwns5wpK2B9Y9OATN5IgSAqXgrzDfQyh9K7hGrPEkiGKO-GmulaSgqlj6tg33aiFKoQazSodj_gafjMmg_YtAAiS1S3ZQTXblEKNOmXWi1JmFtO6ot_E6Q0lWQE18_t09AdiBimcWXjAeHU0eww2aQD8NV7RNY9cdz1e6tb8kFcfn4Tn1g-YAcrI_O46wIlLGIpI3nZll2fDSaMcIRKs registry.redhat.io
+  256  podman login quai.io
+  257  podman login -u="lolivero" -p="vumlmNtgTulEZYmeknW9kpF8XUSah3s9jlboZ++/ew7hFM0qFL/sEjbhswft4mG8" quay.io
+  258  podman run -d --name official-httpd  -p 8180:80 quay.io/redhattraining/httpd-parent
+  259  podman exec -it official-httpd /bin/bash
+  260  curl 127.0.0.1:8180/do180.html
+  261  podman diff official-httpd
+  262  podman stop official-httpd
+  263  podman commit -a "Luis Oliveros" official-httpd do180-custom-httpd
+  264  podman images 
+  265  source /usr/local/etc/ocp4.config
+  266  cat /usr/local/etc/ocp4.config
+  267  podman tag do180-custom-httpd quay.io/${RHT_OCP4_QUAY_USER}/do180-custom-httpd:v1.0
+  268  podman images 
+  269  podman push quay.io/${RHT_OCP4_QUAY_USER}/do180-custom-httpd:v1.0
+  270  podman pull -q quay.io/${RHT_OCP4_QUAY_USER}/do180-custom-httpd:v1.0
+  271  podman images
+  272  podman run -d -name test-httpd -p 8280:80 ${RHT_OCP4_QUAY_USER}/do180-custom-httpd:v1.0
+  273  podman run -d --name test-httpd -p 8280:80 ${RHT_OCP4_QUAY_USER}/do180-custom-httpd:v1.0
+  274  curl http://localhost:8280/do180.html
+  275  lab image-operations finish
+  276  lab image-review start
+  277  podman pull quay.io/redhattraining/nginx:1.17.
+  278  podman pull quay.io/redhattraining/nginx:1.17
+  279  podman images
+  280  podman run -d --name official-nginx -p 8080:80 quay.io/redhattraining/nginx:1.17
+  281  podman exec -it official-nginx /bin/bash
+  282  curl http://localhost:8080
+  283  podman stop official-nginx
+  284  podman diff official-nginx
+  285  podman commit -a "Luis Oliveros" official-nginx do180/mynginx:v1.0-SNAPSHOT
+  286  podman images
+  287  podman run -d --name official-nginx-dev -p 8080:80 do180/mynginx:v1.0-SNAPSHOT
+  288  oc exec -it official-nginx-dev /bin/bash
+  289  podman exec -it official-nginx-dev /bin/bash
+  290  curl http://localhost:8080
+  291  podman stop official-nginx-dev
+  292  podman commit -a "Luis Oliveros" official-nginx-dev do180/mynginx:v1.0
+  293  podman images
+  294  podman rmi localhost/do180/mynginx:v1.0-SNAPSHOT
+  295  podman ps -a
+  296  podman rm f933110b9545
+  297  podman rmi do180/mynginx:v1.0-SNAPSHOT
+  298  podman images
+  299  podman run -d --name my-nginx -p 8280:80 do180/mynginx:v1.0
+  300  curl 127.0.0.1:8280
+  301  lab image-review grade
+  302  lab image-review finish
